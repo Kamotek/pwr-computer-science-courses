@@ -1,0 +1,4 @@
+Wykaz towarow nr  01/2023
+Nazwa_towaru  ilosc    cena
+ok  ok  ok  ok
+pl  pl  pl  pl

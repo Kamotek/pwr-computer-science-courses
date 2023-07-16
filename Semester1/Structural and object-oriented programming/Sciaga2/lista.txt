@@ -1,0 +1,5 @@
+Lista studentow kierunku Informatyka
+Lp Nr_indeksu Nazwisko Imie Ocena1 Ocena2 Ocena3
+1 12345 Nowak Jan 3.0 4.0 5.0
+2 54321 Kowal Kuba 5.0 4.0 5.0
+3 12121 Wisnia Anna 5.0 3.0 5.5

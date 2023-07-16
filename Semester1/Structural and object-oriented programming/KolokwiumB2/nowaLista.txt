@@ -1,0 +1,3 @@
+Wykaz towarow dostepnych
+Lp.   Nazwa   Ilosc   Cena    Wartosc
+pl  pl  pl  pl

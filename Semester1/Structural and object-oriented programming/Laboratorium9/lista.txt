@@ -1,0 +1,2 @@
+Transakcja [kwota=688.5, karta=Karta Studenta numerTransakcji=0]
+Transakcja [kwota=688.5, karta=Karta Studenta numerTransakcji=1]
