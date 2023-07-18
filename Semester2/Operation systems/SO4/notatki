@@ -1,0 +1,31 @@
+jakas liczba ramek, np 20
+dzielone sa na procesy w zaleznosci od kryteriow algorytmu
+liczenie unikalnych stron z kolejki i tych ktore sie powtarzaja
+
+
+proc1 : 1,2,2,3,1,3,1,1
+proc2: 6,7,7,8,9,10,6,7,9
+global: 1,2,2,6,3,7,7...
+
+{proc1, proc12, proc13, proc21}
+
+przyjmujemy sobie czas, T = 10
+
+h - 7
+l - 3
+
+procesow wystarczy kilka, mozna zrobic symulacje ze procesy sie pojawia naraz
+albo zaimplementowac system ze proces sie pojawia, zrobi do polowy, kolejny sie pojawi, tamten sie skonczy, dwa nowe wejda etc etc
+
+
+kwestia sprawdzania w czasie:
+
+sprawdzanie na zasadzie
+okienko czasu - ile bledow? next okienko - ile bledow? etc etc 
+
+jezeli proces jest wstrzymany, a global chce go wywolac to odflitrowac
+(i nadrobic)
+
+
+
+
