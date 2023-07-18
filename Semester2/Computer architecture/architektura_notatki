@@ -1,0 +1,274 @@
+#   Klasyfikacja
+
+1. Taksonomia Flynna
+    - używa strumieni danych i strumieni instrukcji
+    - Dzieli się na:
+        *SISD - jednordzeniowe procesory i komputery mainframe (stare)
+        *SIMD - Kart graficzne (gpu)
+        *MISD - architektury odporne na bledy, real-time computing
+        *MIMD - wspolczesne komputery
+2. Klasyfikacja Fenga
+    - stopień zrównoleglenia, czyli max bitów na sekundę
+    - sredni stopien zrownoleglenia, suma bitow przez czas
+    - poziom wykorzystania, wzor: Pa/P (srednie wykorzystanie przez maksymalne)
+    - P(m, n), gdzie m = liczba slow przetwarzanych rownolegle, n = liczba bitow przetwarzanych w slowie
+        *WSBS - szeregowe przetwarzanie P(1,1)
+        *WSBP - wszystkie bity jednego slowa naraz P(1,*)
+        *WPBS - po jednym bicie z każdego słowa naraz P(*,1)
+        *WPBP - wszystkie bity wszystkich słów naraz, max. zrównoleglenie P(*,*)
+            (W - word, B - bit, S - serial, P - parallel)
+3. Klasyfikacja Handlera
+    - Odnosi się do trzech poziomów:
+        - PCU - Program Control Unit        - Kontroler ALU
+        - ALU - Arithmetic Logic Unit       - Służy do przetwarzania informacji
+        - ELC - Elementary Logic Circuit    - Jest to układ logiczny służący do przetworzenia jednobitowej operacji w ALU
+    - Mamy taki opis: 
+        Komputer = (PCU * PCU', ALU*ALU', bity_w_ALU*segmenty_do_potokowania_w_ALU)
+        
+[Tutaj mozna dowiedziec sie wiecej](https://hpc.llnl.gov/documentation/tutorials/introduction-parallel-computing-tutorial)
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+################################################################################################################################################################
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+#   Hierarchia pamięci
+
+1. Pamięć jest zhierarchizowana
+    - piramida pamięci:
+        a. rejestry procesora       -   malutka, bardzo kosztowna i super szybka, znika po odcięciu zasilania
+        b. pamięć cache procesora   -   malutka, bardzo kosztowna i super szybka, takze znika po odcieciu zasilania
+        c. RAM                      -   zdecydowanie wiekszy, tanszy, takze ulotny
+        d. pamięć FLASH/USB         -   wiekszy od RAMu, tanszy i moze przechowywac dane przez dluzszy czas
+        e. dyski twarde             -   ogromne pojemnosci, bardzo tanie i bardzo trwale
+        d. taśmy                    -   jeszcze wieksze pojemnosci, ale zdecydowanie wolniejsze, taniutkie i przechowuja info prawie na wiecznosc
+    - ogolna zasada jest taka ze od procesora w dol kazda pamiec jest trwalsza, wieksza, wolniejsza i tansza
+    - bezpieczeństwo:
+        * im głębiej znajduje się błąd (procesor), tym trudniej jest go naprawić, a jego skutki rzutują na wszystkie wyższe poziomy
+2. lstopo z pakietu Portable Hardware Locality
+3. Lokalność
+    - przestrzenna
+        zwracamy uwagę na lokalizację komórek pamięci, tzn odczytywanie sąsiadujących komórek
+    - czasowa
+        zwracamy uwagę na historię odczytu komórek pamięci, tzn odczytywanie tych, które niedawno również były odczytane
+    - zimne i gorące przechowywanie (?)
+4. Zarządzanie pamięcią
+    - idea jest taka, że umieszczamy to co częsciej odczytujemy w szybszych warstwach pamięci i budujemy świadomość tego, z czego nasz komputer korzysta
+5. Działanie cache procesora
+    - Procesor szuka danych w pamięci Cache
+        jeżeli trafi, mamy cache hit, jeżeli nie - cache miss
+    - Współczynnik trafień
+        dla L1 wynosi w dzisiejszych sprzętach ponad 90%
+    - Współczynnik nietrafień
+        dopełnienie wspołczynnika trafień do 1 ( 1 - współczynnik trafień)
+    - Jeżeli mamy *Cache Miss* to zaczynamy się odwoływać do wyższych warstw pamięci
+    
+[Tutaj można dowiedzieć się więcej](https://www.edn.com/memory-hierarchy-design-part-1-basics-of-memory-hierarchies/)
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+################################################################################################################################################################
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+# Rodzaje architektur
+
+1. Princeton (John von Neumann)
+    - Składa się z:
+        * pamięć
+        * ALU
+        * CU ( control unit )
+        * I/O
+    - Pamięć i dane kontroluje procesor
+        w pamięci przechowywane są instrukcje i dane
+    - Wszystko jest połączone szyną [półdupleksową]
+        dupleks     - dane mogą iść w obu kierunkach jednocześnie
+        półdupleks  - dane mogą iść w obydwu kierunkach, ale nie równolegle 
+    - [schemat] www.justgoogleit.pl
+    - Zalety
+        + CU pozyskuje dane i instrukcje z jednej pamięci
+        + dane z urządzeń i pamięci są dostępne w taki sam sposób
+        + programiści mogą dowolnie zarządzać przestrzenią pamięci
+    - Wady
+        - brak zrównoleglenia
+        - pojedyńcza szyna danych robi dużego bottle necka
+        - instrukcje i dane są w tym samym miejscu, a więc mogą się wzajemnie nadpisywać
+2. Harvard
+    - Budowa podobna do Princeton
+    - [instrukcje i dane są rozłączne] <-- największa różnica
+        Dzięki temu, możemy do obydwu mieć dostęp równolegle
+        I nie nadpisują się, nice
+    - Zalety
+        + mamy równoległy dostęp do danych i pamięci (i nie nadpisują się)
+        + różny rozmiar komórek pamięci
+        + dostęp do danych i instrukcji jest realizowany w ten sam sposób
+    - Wady
+        - dwie szyny danych, co powoduje wyższą cenę
+        - wolna pamięć nie może być alokowana dla innego typu pamięci
+3. Harvard-Princeton
+    - Jest to hybryda redukująca wady
+    - wyższe hierarchicznie pamięci są osobne, a niższe wspólnie
+    - przynajmniej jeden poziom cache jest osobny dla danych i instrukcji
+    - szybka, dzięki temu że działa w dupleksie
+    - jest elastyczna
+    
+[Tutaj można dowiedzieć się więcej](https://konstantin.solnushkin.org/teaching_reports/intro_to_hpc/2007/harvard_architecture.pdf)
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+################################################################################################################################################################
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+# Architektura zestawu instrukcji, jak działa procesor?
+
+1. Architektura zestawu instrukcji
+    - To instrukcje, które może używać programista, do tego aby napisać jakikolwiek program, definiuje:
+        1. Organizacja pamięci
+            a. przestrzeń adresowa  - obszar jaki można zaadresować
+            b. rozmiar słowa        - ile bitów mieści się w jednej komórce adresowej
+        2. Rejestry
+            a. ile?
+            b. jakiego rozmiaru?
+            c. jakie?
+            d. jak z nich korzystać?
+        3.  Zbiór instrukcji
+            a. adresowanie
+            b. kody operacji
+            c. typy danych (np bajt lub słowo)
+            
+        4. liczb i rodzaje operacji
+        5. liczba, lokalizacja, typ i sposób podawania argumentów
+        6. format i liczba formatów instrukcji
+        
+        7. obsługa i interakcja z danymi
+            a. ustawianie rejestrów na stałe wartości
+            b. kopiowanie danych z pamięci i zapisywanie ich
+            c. odczyt i zapis danych z urządzeń zewnętrznych
+        8. operacje artytmetyczne i logiczne
+            a. operacje arytmetyczne (ADD, MUL)
+            b. operacje logiczne (AND, OR)
+            c. porównania
+            d. operacje dekrementacji i inkrementacji (???)
+        9. flow
+            a. wywolywania, (calling)
+            b. rozgałęzienia (branching)
+    - Argumenty, gdzie są przechowywane?
+        - rejestry
+        - pamięć
+        - stos
+        - akumulator
+    - [Akumulator] - rejestr, który robi za argument, zapisuje wyniki
+    
+[Tutaj można dowiedzieć się więcej, filmik 20 minut](https://www.youtube.com/watch?v=cNN_tTXABUA)
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+################################################################################################################################################################
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+# Instrukcje, ISA, RISC, kompilowanie kodu
+
+1. Instrukcje stałej długości:
+    - potrzeba więcej instrukcji
+    - są szybsze, nie trzeba ich dekodować
+    - przykłady:
+        * Alpha
+        * ARM
+        * MIPS
+        * PowerPC
+2. Instrukcje zmiennej długości:
+    - większa elastyczność
+    - wolniejsze, wymagają dekodowania
+    - przykłady:
+        * VAX
+        * Intel 80x86
+3. Model mieszany:
+    - przyklady:
+        * ARM
+        * IBM 360/70
+        
+4. Rodzaje procesorów:
+    - Ogólnego przeznaczenia
+    - Procesory specjalizowane, tzw koprocesory:
+        * GPU
+        * offload TCP
+        * akceleratory kryptograficzne
+5. Energia procesora:
+    - Zmniejszanie zużycia energii:
+        * redukcja napięcia
+        * zmniejszenie częstotliwości
+        * clock gating
+        * redukcja energii przełączania
+    - Kilka procesorów i ich zapotrzebowania:
+        * Intel® Core™ i7-6800K - 140W
+        * Intel® Core™ i7-4600M - 37W
+        * AMD Ryzen 5600x - 65 W
+        * Intel Core i5-8350U - 25W
+        --- te dwa niżej to procesory mikrokontrolerow
+        * ARM® Cortex® A9 - 1.9W - 
+        * M3 - 900pW 
+6. RISC vs CISC
+    - RISC (Reduced Instruction Set Computing)
+        * instrukcje proste i stałej długości
+        * szybsze wykonanie elementarnych instrukcji
+    - CISC (Complex Instruction Set Computing)
+        * bardziej złożone instrukcje o zmiennej długości
+        * więcej cykli procesora na wykonanie jednej instrukcji
+        
+[Sporo linków, lepiej poklikać z wykładu](https://eportal.pwr.edu.pl/pluginfile.php/623564/mod_resource/content/0/Wyk%C5%82ad%206%20-%20instrukcje%2C%20ISA%2C%20RISC.pdf)
+
+
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+################################################################################################################################################################
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+# CPU, FPGA, ASIC, MIPS
+
+1. FPGA (field-programmable gate array)
+    - Zastosowanie:
+        * elektronika użytkowa
+        * medycyna
+        * automotive
+        * przetwarzanie audio-video
+    - Jest to ogólnie układ programowalny, główną jego różnicą od CPU jest to, że nie jest tak monolityczny i może wykonywać wiele instrukcji jednocześniet
+    - są tańsze od CPU, używają dużej liczby bramek
+    - używa się ich także do projektowania ASIC
+2. ASIC (application specific integrated circuit)
+    - Zastosowania:
+        * branża kosmiczna
+        * DSP (przetwarzanie sygnałów)
+        * kryptografia
+    - Tworzony do wykonania konkretnego zadania, stała konfiguracja
+    - Najtańsze, niskie zużycie energi
+3. CPU
+    - Zastosowanie:
+        * ogólnego przeznaczenia
+    - najdroższe, zużywają sporo energii, stała konfiguracja sprzętowa
+4. MIPS
+    - Zastosowanie:
+        * systemy wbudowane:
+            Nintendo 64, PlayStation2 i PSP
+        * superkomputery
+            SGI Challenge
+        * urządzenia sieciowe
+            Ubiquiti - routery, switche, etc
+        * IoT
+            Onion Omega
+    - Przetwrazanie potokowe (pipeline processing)
+        * przyszybsza prace
+        * realizuje wiele instrukcji jednoczesnie
+        * lecimy krokami, kazdy krok realizuje kilka instrukcji, idealnie to czas wynosi tyle samo ile procesor/segmenty
+5. Potok RISC
+    - [IF] pobranie 
+    - [ID] dekodowanie
+    - [EX] wykonanie
+    - [MEM] dostep do pamieci
+    - [WB] zapis do rejestru
+    
+
+        
+    
+            
+        
+    
+
+
+
+
+

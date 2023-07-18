@@ -1,0 +1,20 @@
+Mamy 3 klasyfikacje
+1. Taksonomia Flynna
+	Opiera się na strumieniach, rozróżnia ona strumienie danych i instukcji i sposób ich przetwarzania, np
+		SISD - działamy na jednym strumieniu i jednej instrukcji jednoczesnie
+		SIMD - dzialamy na jednym strumieniu i wielu instrukcjach jednoczesnie
+		MISD - dzialamy na wielu strumieniach i jednej instrukcji jednoczesnie
+		MIMD - dzialamy na wielu strumieniach i wielu instrukcjach jednoczesnie (pelna rownoleglosc)
+
+2. Klasyfikacja Fenga
+	Opiera się wzorach na obliczaniu zrównoleglenia, czyli jaki jest stosunek wszystkich bitów do bitów przetwarzanych w określonym czasie
+		Mamy P = (m, n), gdzie m to maksymalna ilość bitów w słowie, a n to ilość prztwarzanych bitów
+			Mamy więc następujące możliwości:
+			
+			P(1,1) - przetwarzanie szeregowe - 1 bit z jednego slowa
+			P(1, *) - jest to przetwarzanie typu wszystkie bity jednego slowa naraz
+			P(*, 1) - przetwarzamy po jednym bicie kazdego slowa po kolei
+			P(*, *) - przetwarzamy wszystko naraz
+
+3. Klasyfikacja Handlera
+		

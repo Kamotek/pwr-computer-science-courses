@@ -1,0 +1,59 @@
+.data
+
+menu_msg: .asciiz "===Wpisz rodzaj operacji=== \n 1 - aby zapisac tablice \n 2 - aby odczytac tablice \n 3 - zakoncz program \n====== \n Twoj wybor: "
+
+gen_msg_gnl: .asciiz "Podaj dlugosci tablicy do wygenerowania: "
+gen_msg_row:.asciiz "Podaj jak dluga ma byc tablica: "
+gen_msg_col: .asciiz "Podaj jak wysoka ma byc tablica: "
+
+index_msg_row: .asciiz "Podaj numer wiersza: "
+index_msg_col: .asciiz "Podaj numer kolumny: "
+
+insert_msg_val: .asciiz "Podaj liczbe do wprowadzenia: "
+
+newline: .asciiz "\n"
+
+RAM: .space 4096
+
+
+
+
+.text
+#--- generator tablicy---
+
+li $t0, 5
+li $t1, 5
+#---
+
+	li $t3, -1
+	li $t4, -1
+	la $t2, RAM
+	gen_loop_outer:
+			beq $t3, $t1, end_loop
+		addi $t3, $t3, 1
+		mul $t4, $t3, 100
+		li $t5, 0 
+		gen_loop_inner:
+			beq $t5, $t0, gen_loop_outer
+			add $t5, $t5, 1
+			add $t6, $t5, $t4
+			sb $t6, ($t2)
+			
+			lb $a0, ($t2)
+			li $v0, 1
+			syscall
+			
+			la $a0, newline
+			li $v0, 4
+			syscall
+			
+			addi $t2, $t2, 4
+			
+			j gen_loop_inner
+			
+end_loop:
+			
+	li $v0, 10
+	syscall
+
+			
