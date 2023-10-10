@@ -9,13 +9,9 @@ int main()
 {
 
     // 1
-    int* i_size_of_fill_array = new int;
-    *i_size_of_fill_array = -2;
-    if (*i_size_of_fill_array < 0) {
-        std::cout << "Negative size of array, changing to size of 10" << "\n";
-        *i_size_of_fill_array = 10;
-    }
-    v_alloc_table_fill_34(*i_size_of_fill_array);
+    int i_size_of_fill_array = -2;
+    v_alloc_table_fill_34(i_size_of_fill_array);
+
 
     // 2
 
@@ -51,27 +47,34 @@ int main()
 
     pc_new_tab->v_mod_tab(pc_new_tab, 5);
 
+    std::cout << "\n";
+
     delete pc_new_tab;
 
     // --
-
-
 
     return 0;
 }
 
 void v_alloc_table_fill_34(int iSize) {
 
+    int i_size_of_fill_array = iSize;
+
+    if (i_size_of_fill_array < 0) {
+        i_size_of_fill_array = 10;
+        std::cout << "Negative size of array, changing to size of 10" << "\n";
+    }
 
 
-    int* pi_dynamic_table = new int[iSize];
+
+    int* pi_dynamic_table = new int[i_size_of_fill_array];
     const int i_number_to_fill = 34;
 
-    for (int ii = 0; ii < iSize; ii++) {
+    for (int ii = 0; ii < i_size_of_fill_array; ii++) {
         pi_dynamic_table[ii] = i_number_to_fill;
     }
 
-    for (int ii = 0; ii < iSize; ii++) {
+    for (int ii = 0; ii < i_size_of_fill_array; ii++) {
         std::cout << pi_dynamic_table[ii] << "\n";
     }
 
