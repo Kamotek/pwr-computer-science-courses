@@ -12,9 +12,7 @@ int main()
     int i_size_of_fill_array = -2;
     v_alloc_table_fill_34(i_size_of_fill_array);
 
-
     // 2
-
 
     int** pi_table; // Deklaracja wskaźnika do wskaźnika
     int sizeX = 5;
@@ -46,7 +44,6 @@ int main()
     std::cout << "\n";
 
     pc_new_tab->v_mod_tab(pc_new_tab, 5);
-
     std::cout << "\n";
 
     delete pc_new_tab;
@@ -64,8 +61,6 @@ void v_alloc_table_fill_34(int iSize) {
         i_size_of_fill_array = 10;
         std::cout << "Negative size of array, changing to size of 10" << "\n";
     }
-
-
 
     int* pi_dynamic_table = new int[i_size_of_fill_array];
     const int i_number_to_fill = 34;
