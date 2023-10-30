@@ -11,8 +11,8 @@ let rec lastElement = function
 let myList = [1; 2; 3; 4; 5];;
 let result = lastElement myList;;
 match result with
-| Some x -> Printf.printf "Ostatni element to %d\n" x
-| None -> Printf.printf "Lista jest pusta\n";;
+| Some x -> Printf.printf "Last element is: %d\n" x
+| None -> Printf.printf "List is empty\n";;
 
 
 

@@ -29,8 +29,8 @@ object app extends App {
     println("Task 2: ")
 
     def twoLastElements[T](myList: List[T]): Option[List[T]] = {
-        if(myList.isEmpty) {None}
-        else if(myList.length <= 2) {
+        if(myList.isEmpty || myList.length == 1) {None}
+        else if(myList.length == 2) {
             Some(myList)
         } 
         else {
@@ -50,7 +50,7 @@ object app extends App {
 
     def listLength[T](myList: List[T]): Int = {
         if (myList.isEmpty) {
-            0 // Return 0 for an empty list
+            0 
         }
         else {
             def listLengthHelp[T](myList: List[T], value: Int): Int = {
@@ -61,7 +61,7 @@ object app extends App {
                     listLengthHelp(myList.tail, value + 1)
                 }
             }
-            listLengthHelp(myList, 0) // Call the inner function with an initial value of 0
+            listLengthHelp(myList, 0) 
        }
     }
 
