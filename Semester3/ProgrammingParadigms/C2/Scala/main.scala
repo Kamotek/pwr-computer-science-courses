@@ -1,6 +1,6 @@
 import scala.annotation.tailrec
 object app extends App {
-    // Zad1 - myślę, że 1
+    // Zad1 - myślę, że 4
 
     // 2
 
@@ -115,7 +115,7 @@ object app extends App {
     def initSegment[A](xs: List[A], ys: List[A]): Boolean = {
         @annotation.tailrec
         def checkSegment(xstail: List[A], ystail: List[A]): Boolean = (xstail, ystail) match {
-            case (Nil, _) => true          // Pusta lista jest początkowym segmentem każdej listy.
+            case (Nil, _) => true       
             case (x :: xsRest, y :: ysRest) if x == y => checkSegment(xsRest, ysRest)
             case _ => false
         }
@@ -154,4 +154,12 @@ object app extends App {
     println(modifiedList) // ['o', 's', 'a', 'm', 'a', 'k', 'o', 't', 'a']
 
 
+
+    // 7
+
+    var myList = List(1,2,3)
+
+    
+
+    
 }   
