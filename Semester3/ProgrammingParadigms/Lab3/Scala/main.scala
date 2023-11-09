@@ -1,6 +1,8 @@
 import scala.languageFeature.reflectiveCalls
+import scala.collection.immutable.List
 object app extends App {
 
+    // lista 4
 
     // 0
 
@@ -18,7 +20,7 @@ object app extends App {
 
     println("Task 1: ")
 
-    def Map(myList: List[Int], unaryFunction: Int => Int): List[Int] = {
+    def Map[T](myList: List[Int], unaryFunction: Int => Int): List[Int] = {
         myList match {
             case Nil => Nil 
             case head :: tail => unaryFunction(head) :: Map(tail, unaryFunction) 
@@ -65,7 +67,7 @@ object app extends App {
 
     val result3 = Reduce(myIntegers3, (x,y) => x+y, 0)
 
-    print(result3)
+    println(result3)
 
     // 4
 
@@ -79,7 +81,7 @@ object app extends App {
 
     val result4 = Average(myIntegers4)
 
-    print("Average of this list is: " + result4)
+    println("Average of this list is: " + result4)
 
 
     // 5
