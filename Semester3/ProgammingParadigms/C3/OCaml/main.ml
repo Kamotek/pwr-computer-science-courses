@@ -122,36 +122,3 @@ let rec insertionSort order = function
 
   (*/// b*)
 
-  let rec merge cmp list1 list2 = match (list1, list2) with
-  | [], lst -> lst
-  | lst, [] -> lst
-  | h1 :: t1, h2 :: t2 ->
-      if cmp h1 h2 then h1 :: merge cmp t1 list2
-      else h2 :: merge cmp list1 t2
-
-let rec split lst = match lst with
-  | [] -> [], []
-  | [x] -> [x], []
-  | x :: y :: rest ->
-      let left, right = split rest in
-      x :: left, y :: right
-
-let rec mergeSort cmp lst = match lst with
-  | [] -> []
-  | [x] -> [x]
-  | _ ->
-      let left, right = split lst in
-      merge cmp (mergeSort cmp left) (mergeSort cmp right)
-
-
-      let sortedList2 = mergeSort myOrder [(1,2);(1,1);(1,3);(2,1);(2,2);(1,4)];;
-
-  
-
-
-
-      
-      print_list1 sortedList2;;
-
-
-
