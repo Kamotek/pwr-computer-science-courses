@@ -1,4 +1,4 @@
-import scala.collection.mutable.HashMap
+id: file://<WORKSPACE>/main.scala:[401..402) in Input.VirtualFile("file://<WORKSPACE>/main.scala", "import scala.collection.mutable.HashMap
 import scala.annotation.tailrec
 
 
@@ -18,7 +18,7 @@ object app extends App {
     println(stirling(10, 3))
 
 
-   
+   def() => {
     
     val memo: HashMap[(Int, Int), Int] = HashMap()
 
@@ -33,6 +33,8 @@ object app extends App {
 
     println(memorized_stirling(10, 3))
     println(memorized_stirling(10, 3))
+
+}
 
 //2
 
@@ -236,4 +238,11 @@ object app extends App {
 
     println(modifiedStreamNumbers)
     
-}
+}")
+file://<WORKSPACE>/main.scala
+file://<WORKSPACE>/main.scala:21: error: expected identifier; obtained lparen
+   def() => {
+      ^
+#### Short summary: 
+
+expected identifier; obtained lparen
