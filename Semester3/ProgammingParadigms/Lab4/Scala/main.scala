@@ -177,7 +177,6 @@ object App extends App {
         case Just(value: A)
         case Nothing
 
-// Przykładowe użycie dla typu Int
     val maybeInt: Maybe[Int] = Maybe.Just(10)
     val maybeString: Maybe[String] = Maybe.Nothing
 
