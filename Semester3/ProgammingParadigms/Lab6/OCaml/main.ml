@@ -1,9 +1,13 @@
+
+
+(*tworzymy sygnature, a w niej typ rekordowy, sygnatura funkcji tworzacej punkt i sygnatura funkcji obliczjacej dystants dwoch punktow*)
 module type Point3DSig = sig
-  type point3D
+  type point3D = { x: float; y: float; z: float }
   val create_point : float -> float -> float -> point3D
   val distance : point3D -> point3D -> float
 end
 
+(*tutaj tworzymy sam modul*)
 module Point3DModule : Point3DSig = struct
   type point3D = { x: float; y: float; z: float }
 
@@ -16,17 +20,33 @@ module Point3DModule : Point3DSig = struct
     sqrt (dx *. dx +. dy *. dy +. dz *. dz)
 end
 
+(* prosta funkcja ktora korzysta z modulu, zeby stworzyc punkty i policzyc odleglosc miedzy nimi i wypisac *)
+  let calculate_distance () = 
+    let p1 = Point3DModule.create_point 0.0 0.0 0.0 in
+    let p2 = Point3DModule.create_point 1.0 1.0 1.0 in
+    let dist = Point3DModule.distance p1 p2 in
+    print_float dist ;;
+
+  
+  calculate_distance();;
+  print_newline ()
+
+
+
 
 
 (*/2*)
 
+
+(*sygnatura modulu, mamy dwa typy, funkcje tworzaca odcinek i funkcje zwracajaca jego dlugosc*)
 module type LineSegmentSig = sig
   type point3D
-  type lineSegment
+  type lineSegment = {start_point: point3D ; end_point: point3D}
   val create_segment : point3D -> point3D -> lineSegment
   val length : lineSegment -> float
 end
 
+(*implementacja modulu*)
 module LineSegmentModule (P : Point3DSig) : LineSegmentSig with type point3D = P.point3D = struct
   type point3D = P.point3D
   type lineSegment = { start_point: point3D; end_point: point3D }
@@ -123,18 +143,17 @@ module BinaryTreeModule : BinaryTreeSig = struct
         postorder_traversal left @ postorder_traversal right @ [v]
 end
 
-(*   *)
-module IntBinaryTree = BinaryTreeModule;;
+(* Tutaj przypadki testowania naszego drzewa *)
 
 let tree =
-  List.fold_left (fun acc x -> IntBinaryTree.insert x acc) IntBinaryTree.empty_tree [5; 3; 7; 2; 4; 6; 8];;
+  List.fold_left (fun acc x -> BinaryTreeModule.insert x acc) BinaryTreeModule.empty_tree [5; 3; 7; 2; 4; 6; 8];;
 
-let search_result_1 = IntBinaryTree.search 6 tree;;
-let search_result_2 = IntBinaryTree.search 9 tree;;
+let search_result_1 = BinaryTreeModule.search 6 tree;;
+let search_result_2 = BinaryTreeModule.search 9 tree;;
 
-let inorder_elements = IntBinaryTree.inorder_traversal tree;;
-let preorder_elements = IntBinaryTree.preorder_traversal tree;;
-let postorder_elements = IntBinaryTree.postorder_traversal tree;;
+let inorder_elements = BinaryTreeModule.inorder_traversal tree;;
+let preorder_elements = BinaryTreeModule.preorder_traversal tree;;
+let postorder_elements = BinaryTreeModule.postorder_traversal tree;;
 
 Printf.printf "Inorder traversal result: [%s]\n" (String.concat "; " (List.map string_of_int inorder_elements));;
 Printf.printf "Preorder traversal result: [%s]\n" (String.concat "; " (List.map string_of_int preorder_elements));;
@@ -146,17 +165,20 @@ Printf.printf "Search result for 9: %b\n" search_result_2;
 
 (*4*)
 
+(*tworzymy sygnature modulu*)
 module type CoordinateSig = sig
   type t
   val distance : t -> t -> float
   val add : t -> t -> t
 end
 
+(*tworzymy modul*)
 module IntCoordinate : CoordinateSig with type t = int = struct
   type t = int
   let distance a b = float_of_int (abs (b - a))
   let add a b = a + b
 end
+
 
 module MakePoint (C : CoordinateSig) = struct
   type point = { x: C.t; y: C.t }
@@ -190,4 +212,64 @@ Printf.printf "Original point: x=%d, y=%d\n" point.x point.y;;
 
 let shift = IntTranslation.create_shift 2 3;;
 let translated_point = IntTranslation.translate_point shift (convert_to_translation_point point);;
-Printf.printf "Translated point: x=%d, y=%d\n" translated_point.x translated_point.y
+Printf.printf "Translated point: x=%d, y=%d\n" translated_point.x translated_point.y;;
+
+
+(*6*)
+module Translate_Point (P : Point3DSig) = struct
+  let translate_point (p : P.point3D) (dx : float) (dy : float) (dz : float) : P.point3D =
+    P.create_point (p.x +. dx) (p.y +. dy) (p.z +. dz)
+end
+
+module Translate_Segment (P : Point3DSig) (S : LineSegmentSig with type point3D = P.point3D) = struct
+  module Translator = Translate_Point(P)
+  
+  let translate_segment (s : S.lineSegment) (dx : float) (dy : float) (dz : float) : S.lineSegment =
+    let new_start = Translator.translate_point s.start_point dx dy dz in
+    let new_end = Translator.translate_point s.end_point dx dy dz in
+    S.create_segment new_start new_end
+  end
+
+
+let point_a = Point3DModule.create_point 0.0 0.0 0.0
+let point_b = Point3DModule.create_point 1.0 1.0 1.0
+
+module LineSegment = LineSegmentModule(Point3DModule);;
+
+let point_a = Point3DModule.create_point 0.0 0.0 0.0;;
+let point_b = Point3DModule.create_point 1.0 1.0 1.0;;
+
+
+module Translate_Segment = Translate_Segment(Point3DModule)(LineSegmentModule(Point3DModule))
+
+
+let segment_ab = LineSegment.create_segment point_a point_b;;
+
+let translated_segment = Translate_Segment.translate_segment segment_ab 1.0 1.0 1.0;;
+
+
+
+let print_end_point_coordinates (segment : LineSegment.lineSegment) =
+  let end_point = segment.end_point in
+  Printf.printf "End Point Coordinates:\n";
+  Printf.printf "x=%.2f, y=%.2f, z=%.2f\n"
+    end_point.x
+    end_point.y
+    end_point.z
+
+
+let print_start_point_coordinates (segment : LineSegment.lineSegment) =
+  let start_point = segment.start_point in
+  Printf.printf "Start Point Coordinates:\n";
+  Printf.printf "x=%.2f, y=%.2f, z=%.2f\n"
+    start_point.x
+    start_point.y
+    start_point.z
+
+;;
+
+print_end_point_coordinates segment_ab;;
+print_start_point_coordinates segment_ab;;
+
+print_end_point_coordinates translated_segment;;
+print_start_point_coordinates translated_segment;;
