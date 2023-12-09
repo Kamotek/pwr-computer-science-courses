@@ -1,0 +1,34 @@
+A więc mamy:
+kilka komend 
+enter + * a b c
+vars 1 2 3
+print
+comp - dopiero tutaj liczymy
+join - a b tworzymy nowe drzewo i dodajemy do pierwszego  - dodajemy to wyrazenie
+
+no ok
+to struktura algo
+
+1. bedziemy wczytywac stringa
+2. dzielimy nasz string na tablice charow uzywajac splita jakiegos
+3. tworzymy drzewo
+4. interpretujemy nasze chary i dodajemy do drzewa
+5. Tworzenie drzewa:
+a) (znaki specjalne: +, -, *, /, sin, cos) <- jezeli na nie trafimy to tworzymy node z dwoma dziecmi
+b) liczby <- jezeli na nie trafimy robimy node bez dzieci
+c) dodajemy do drzewa
+d) musimy mieć flage czy node ma dzieci czy nie/ czy sa puste czy nie, kilka przypadkow
+	- nie ma dzieci i ma ich nie byc, up
+	- nie ma dzieci a maja byc - down, zaczynajac od left
+	- sa dzieci - up
+
+komendy:
+
+enter robi to co opisane powyzej
+
+vars - dwa pomysly 
+1.przeszukujemy drzewo po kolei tak jak podczas zapisywania i bedziemy modyfikowac literki (to bedzie hardcore)
+2. bedziemy aktualizowac tylko stringa i budowac drzewo jeszcze raz (doubt)
+join - w poleceniu jest zeby do liscia dodac, niestety trzeba sie tego trzymac raczej, to do pierwszego liscia na lewo, albo na koniec tablicy reprezentujacej nasze wspaniale drzewko
+comp - 
+print - no to przeszukujemy drzewko i wypisujemy wartosci od gory do dolu
