@@ -1,3 +1,13 @@
+file://<WORKSPACE>/main.scala
+### java.lang.AssertionError: NoDenotation.owner
+
+occurred in the presentation compiler.
+
+action parameters:
+offset: 3475
+uri: file://<WORKSPACE>/main.scala
+text:
+```scala
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.{Future, Await}
 import scala.concurrent.duration._
@@ -30,7 +40,7 @@ object app extends App {
         }
     }
 
-    def sqrtNumber(number: Int): Result[Int] = {
+    def sqrt(number: Int): Result[Int] = {
         number match {
             case x if x <= 0 => Failure("This number doesn't have root")
             case x => Success(Math.sqrt(x).toInt)
@@ -98,9 +108,8 @@ object app extends App {
    
 
     val result: Result[Int] = handleResult(data, divideByTwo)
-    println(result)
-    val result2: Result[Int] = handleResult(result, sqrtNumber)
-    println(result2)
+    val result2: Result[Int] handleResult(@@)
+
     // ---
 
     def handleResult[X, Y](resultMonad: Result[X], unaryFun: X => Result[Y]): Result[Y] = {
@@ -111,11 +120,35 @@ object app extends App {
     }
 
 
+    def double(value: Int): Result[Int] = {
+        Success(value*2)
+    }
 
-    println(sumNumbersWithInputValidation("example.txt") >>= divideByTwo >>= sqrtNumber)
+    println(handleResult(data, double))
 
     //
     
 
 
 }
+```
+
+
+
+#### Error stacktrace:
+
+```
+dotty.tools.dotc.core.SymDenotations$NoDenotation$.owner(SymDenotations.scala:2576)
+	scala.meta.internal.pc.SignatureHelpProvider$.isValid(SignatureHelpProvider.scala:83)
+	scala.meta.internal.pc.SignatureHelpProvider$.notCurrentApply(SignatureHelpProvider.scala:94)
+	scala.meta.internal.pc.SignatureHelpProvider$.$anonfun$1(SignatureHelpProvider.scala:48)
+	scala.collection.StrictOptimizedLinearSeqOps.loop$3(LinearSeq.scala:280)
+	scala.collection.StrictOptimizedLinearSeqOps.dropWhile(LinearSeq.scala:282)
+	scala.collection.StrictOptimizedLinearSeqOps.dropWhile$(LinearSeq.scala:278)
+	scala.collection.immutable.List.dropWhile(List.scala:79)
+	scala.meta.internal.pc.SignatureHelpProvider$.signatureHelp(SignatureHelpProvider.scala:48)
+	scala.meta.internal.pc.ScalaPresentationCompiler.signatureHelp$$anonfun$1(ScalaPresentationCompiler.scala:375)
+```
+#### Short summary: 
+
+java.lang.AssertionError: NoDenotation.owner
