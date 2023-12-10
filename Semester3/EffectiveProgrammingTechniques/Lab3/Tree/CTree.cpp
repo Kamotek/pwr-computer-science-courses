@@ -75,7 +75,7 @@
             vs_tokens.push_back(s_token);
         }
 
-      //  v_repair_tree();  // naprawiamy drzewo
+        v_repair_tree();  // naprawiamy drzewo
         v_build_tree(); // budujjemy drzewo
         return;
     }
@@ -140,38 +140,60 @@
     }
     // naprawiamy drzewo
     void CTree::v_repair_tree() {
-        std::stack<std::string> stack; // uzywamy stosu i iterujemy dla wszystkich elementow vs_token (czyli stringi) 
-        for (const std::string& token : vs_tokens) {
-            // jezeli nasz element jest operatorem to wrzucamy go na stos
-            if (token == "+" || token == "-" || token == "*" || token == "/") { 
-                stack.push(token);
+        // deklaracja stosu
+        std::stack<std::string> s_token_stack;
+        // deklaracja zmiennej liczacej ilosc nie-operatorow w naszym wyrazeniu, istotny element algorytmu
+        int i_number_counter = 0;
+
+
+        // wrzucamy wszystkie elementy wyrazenia z wektoru na stos
+        for (std::string token : vs_tokens) {
+            s_token_stack.push(token);
+        }
+        // czyscimy nasz wektor, poniewaz bedziemy go aktualizowac
+        vs_tokens.clear();
+
+        // pierwszy element jest wyjatkowy, jezeli jest to operator musimy dodac dwie jedynki (gdyz operator ma dwa liscie)
+        if (s_token_stack.top() == "-" || s_token_stack.top() == "+" || s_token_stack.top() == "*" || s_token_stack.top() == "/" || s_token_stack.top() == "sin" || s_token_stack.top() == "cos") {
+            vs_tokens.push_back("1");
+            vs_tokens.push_back("1");
+            vs_tokens.push_back(s_token_stack.top());
+            s_token_stack.pop();
+            i_number_counter = 1; 
+            
+        }
+        // algorytm dziala nastepujaco:
+        // jezeli mamy do czynienia z nie-operatorem to usuwamy go ze stosu i dodajemy do wektora, inkrementujac i_number_counter
+        // jezeli mamy na stosie operator to sprawdzamy, czy ma on swoje dzieci (i_number_counter >=2)
+        // jezeli mu tych dzieci brakuje to dodajemy (naprawiamy stos)
+        // po dodaniu operatora dekrementujemy i_number_cunter
+        while (!s_token_stack.empty()) {
+            if (s_token_stack.top() == "-" || s_token_stack.top() == "+" || s_token_stack.top() == "*" || s_token_stack.top() == "/" || s_token_stack.top() == "sin" || s_token_stack.top() == "cos") {
+                if (i_number_counter == 0 || i_number_counter == 1) {
+                    vs_tokens.push_back("1");
+                    vs_tokens.push_back(s_token_stack.top());
+                    s_token_stack.pop();
+                    i_number_counter = 0;
+                }
+                else if (i_number_counter >= 2) {
+                    vs_tokens.push_back(s_token_stack.top());
+                    s_token_stack.pop();
+                    i_number_counter--;
+                }
+         
             }
             else {
-                if (stack.empty()) {
-                    //  jezeli stos jest pusty to wrzucamy jedynke
-                    stack.push("1"); 
-                }
-                while (!stack.empty()) {
-                    // iterujemy dopoki stos nie jest pusty
-                    std::string top = stack.top(); // patrzymy co jest na gorze stosu, jezeli operator to go sciagamy
-                    if (top == "+" || top == "-" || top == "*" || top == "/") {
-                        stack.pop();
-                        if (stack.empty()) {
-                            // jezeli stos jest pusty to wrzucamy na poczatek nanszej listy dwie jedynki
-                            vs_tokens.insert(vs_tokens.begin(), "1");
-                            vs_tokens.insert(vs_tokens.begin(), "1");
-                        }
-                    }
-                }
+                vs_tokens.push_back(s_token_stack.top());
+                s_token_stack.pop();
+                i_number_counter++;
             }
         }
-        stack.push("1"); // dodatkowa jedynka, aby zaspokoiæ dodatkowo roota
-        // dodajemy brakujace 1 
-        while (!stack.empty()) {
-            vs_tokens.push_back("1"); // wrzucamy tym razem elementy na koniec stosu ( takie zabiegi po to, aby wynik byl zgodny z onp)
-            stack.pop();
-        }
+
+
+        // na koncu odwracamy nasz wektor, gdyz po operacjach na stosie jest on odwrocony
+        std::reverse(vs_tokens.begin(), vs_tokens.end());
     }
+
 
     void CTree::join(std::string s_expression) {
         CTree tempTree;
@@ -192,7 +214,7 @@
         }
 
         // przebudowujemy drzewo
-        // v_repair_tree();
+        v_repair_tree();
         v_build_tree();
 
         // nie trzeba usuwac tempTree, gdyz jest lokalna zmienna na stosie, ktora sama sie usunie
