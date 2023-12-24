@@ -7,23 +7,6 @@
 #include <vector>
 #include <string>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 int main() {
 
     // test 1 - wprowadzamy niepoprawne wyrazenie w nadziei ze uda sie je naprawic
