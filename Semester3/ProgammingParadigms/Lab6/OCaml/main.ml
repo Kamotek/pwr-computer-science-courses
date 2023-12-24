@@ -247,8 +247,6 @@ let segment_ab = LineSegment.create_segment point_a point_b;;
 
 let translated_segment = Translate_Segment.translate_segment segment_ab 1.0 1.0 1.0;;
 
-
-
 let print_end_point_coordinates (segment : LineSegment.lineSegment) =
   let end_point = segment.end_point in
   Printf.printf "End Point Coordinates:\n";
@@ -265,7 +263,6 @@ let print_start_point_coordinates (segment : LineSegment.lineSegment) =
     start_point.x
     start_point.y
     start_point.z
-
 ;;
 
 print_end_point_coordinates segment_ab;;
