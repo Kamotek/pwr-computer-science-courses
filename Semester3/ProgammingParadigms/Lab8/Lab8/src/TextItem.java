@@ -23,6 +23,7 @@ public class TextItem extends Item{
 
     public void draw() {
         System.out.println(text);
+        System.out.println(position.coordX + " " + position.coordY);
     }
 
     public void translate(Point p) {
