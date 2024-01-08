@@ -1,3 +1,8 @@
+import java.awt.BasicStroke;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Stroke;
+
 public class Triangle extends Shape{
 
 
@@ -7,6 +12,12 @@ public class Triangle extends Shape{
     public Point p3;
     public boolean isFilled;
     Point[] boundingBox = new Point[4];
+
+    int minX;
+    int minY;
+    int maxX;
+    int maxY;
+
 
 
     public Triangle(Point p1, Point p2, Point p3, boolean isFilled) {
@@ -34,6 +45,26 @@ public class Triangle extends Shape{
         System.out.println(p3.getCoordX() + " " + p3.getCoordY());
         System.out.println(isFilled);
     }
+
+    public void draw(Graphics g) {
+        int[] xPoints = {p1.coordX, p2.coordX, p3.coordX};
+        int[] yPoints = {p1.coordY, p2.coordY, p3.coordY};
+
+        if (isFilled) {
+            g.fillPolygon(xPoints, yPoints, 3);
+        } else {
+            g.drawPolygon(xPoints, yPoints, 3);
+        }
+
+        if(!partOfComplex) {
+            Graphics2D g2d = (Graphics2D) g;
+            Stroke dashed = new BasicStroke(1, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[]{2}, 0);
+            g2d.setStroke(dashed);
+            g2d.drawRect(boundingBox[0].getCoordX(), boundingBox[0].getCoordY(), maxX - minX, maxY - minY);
+        }
+
+        
+    }
  
 
     public boolean getFilled() {
@@ -53,14 +84,14 @@ public class Triangle extends Shape{
     }
 
     private void calculateBoundingBox() {
-        int minX = Math.min(Math.min(p1.getCoordX(), p2.getCoordX()), p3.getCoordX());
-        int minY = Math.min(Math.min(p1.getCoordY(), p2.getCoordY()), p3.getCoordY());
-        int maxX = Math.max(Math.max(p1.getCoordX(), p2.getCoordX()), p3.getCoordX());
-        int maxY = Math.max(Math.max(p1.getCoordY(), p2.getCoordY()), p3.getCoordY());
+        minX = Math.min(Math.min(p1.getCoordX(), p2.getCoordX()), p3.getCoordX());
+        minY = Math.min(Math.min(p1.getCoordY(), p2.getCoordY()), p3.getCoordY());
+        maxX = Math.max(Math.max(p1.getCoordX(), p2.getCoordX()), p3.getCoordX());
+        maxY = Math.max(Math.max(p1.getCoordY(), p2.getCoordY()), p3.getCoordY());
 
-        boundingBox[2] = new Point(minX, minY);
+        boundingBox[0] = new Point(minX, minY);
         boundingBox[1] = new Point(maxX, maxY);
-        boundingBox[0] = new Point(minX, maxY);
+        boundingBox[2] = new Point(minX, maxY);
         boundingBox[3] = new Point(maxX, minY);
     }
 }

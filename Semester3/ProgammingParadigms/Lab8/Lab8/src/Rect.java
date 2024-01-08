@@ -1,3 +1,8 @@
+import java.awt.Graphics;
+import java.awt.BasicStroke;
+import java.awt.Graphics2D;
+import java.awt.Stroke;
+
 public class Rect extends Shape{
 
     public Point position;
@@ -8,21 +13,28 @@ public class Rect extends Shape{
     public Point p2;
     public Point p3;
     public Point p4;
+
+    int minX;
+    int minY;
+    int maxX;
+    int maxY;
+
     Point[] boundingBox = new Point[4];
 
-    public Rect(Point p1, Point p2, Point p3, Point p4, boolean isFilled) {
+    public Rect(Point p1, Point p2, boolean isFilled) {
         this.p1 = p1;
         this.p2 = p2;
-        this.p3 = p3;
-        this.p4 = p4;
 
         this.isFilled = isFilled;
 
         calculateBoundingBox();
         position = boundingBox[0];
 
-        this.width = boundingBox[2].coordX - boundingBox[0].coordX;
-        this.height = boundingBox[2].coordY - boundingBox[0].coordY;
+        this.width = maxX - minX;
+        this.height = maxY - minY;
+
+        this.p3 = new Point(Math.max(p2.coordX, p1.coordX), Math.min(p2.coordY, p1.coordY));
+        this.p4 = new Point(Math.min(p2.coordX, p1.coordX), Math.max(p2.coordY, p1.coordY));
 
         
     }
@@ -35,19 +47,52 @@ public class Rect extends Shape{
             return boundingBox;
     }
 
-    public void draw() {
-        System.out.println("Drawing a rectangle at position (" + position.getCoordX() + ", " + position.getCoordY() + ") with width " + width + " and height " + height);
+     public void draw() {
+         System.out.println("Rect");
+         System.out.println(p1.getCoordX() + " " + p1.getCoordY());
+         System.out.println(p2.getCoordX() + " " + p2.getCoordY());
+         System.out.println(p3.getCoordX() + " " + p3.getCoordY());
+         System.out.println(p4.getCoordX() + " " + p4.getCoordY());
+
+         System.out.println("BoundingBox0: " + boundingBox[0].coordX + " " + boundingBox[0].coordY);
+         System.out.println("BoundingBox1: " + boundingBox[1].coordX + " " + boundingBox[1].coordY);
+         System.out.println("BoundingBox2: " + boundingBox[2].coordX + " " + boundingBox[2].coordY);
+         System.out.println("BoundingBox3: " + boundingBox[3].coordX + " " + boundingBox[3].coordY);
+
+         System.out.println("Width: " + width);
+         System.out.println("Height: " + height);
+
+         System.out.println(isFilled);
+         System.out.println(position.getCoordX() + " " + position.getCoordY());
+
+
+     } 
+
+    public void draw(Graphics g) {
+        if (isFilled) {
+            g.fillRect(position.getCoordX(), position.getCoordY(), width, height);
+        } else {
+            g.drawRect(position.getCoordX(), position.getCoordY(), width, height);
+        }
+
+        // Draw bounding box as dotted line
+        if(!partOfComplex) {
+            Graphics2D g2d = (Graphics2D) g;
+            Stroke dashed = new BasicStroke(1, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[]{2}, 0);
+            g2d.setStroke(dashed);
+            g2d.drawRect(boundingBox[0].getCoordX(), boundingBox[0].getCoordY(), width, height);
+        }
     }
+
+
+
 
     public void translate(Point p) {
         p1.setCoordX(p1.coordX + p.coordX);
         p1.setCoordY(p1.coordY + p.coordY);
         p2.setCoordX(p2.coordX + p.coordX);
         p2.setCoordY(p2.coordY + p.coordY);
-        p3.setCoordX(p3.coordX + p.coordX);
-        p3.setCoordY(p3.coordY + p.coordY);
-        p4.setCoordX(p4.coordX + p.coordX);
-        p4.setCoordY(p4.coordY + p.coordY);
+
 
         calculateBoundingBox();
         position = boundingBox[0];
@@ -59,17 +104,16 @@ public class Rect extends Shape{
     }
 
     private void calculateBoundingBox() {
-        int minX = Math.min(Math.min(p1.getCoordX(), p2.getCoordX()), Math.min(p3.getCoordX(), p4.getCoordX()));
-        int minY = Math.min(Math.min(p1.getCoordY(), p2.getCoordY()), Math.min(p3.getCoordY(), p4.getCoordY()));
-        int maxX = Math.max(Math.max(p1.getCoordX(), p2.getCoordX()), Math.max(p3.getCoordX(), p4.getCoordX()));
-        int maxY = Math.max(Math.max(p1.getCoordY(), p2.getCoordY()), Math.max(p3.getCoordY(), p4.getCoordY()));
+        minX = Math.min(p1.getCoordX(), p2.getCoordX());
+        minY = Math.min(p1.getCoordY(), p2.getCoordY());
+        maxX = Math.max(p1.getCoordX(), p2.getCoordX());
+        maxY = Math.max(p1.getCoordY(), p2.getCoordY());
 
-        boundingBox[3] = new Point(minX, minY);
+        boundingBox[0] = new Point(minX, minY);
         boundingBox[1] = new Point(maxX, minY);
         boundingBox[2] = new Point(maxX, maxY);
-        boundingBox[0] = new Point(minX, maxY);
+        boundingBox[3] = new Point(minX, maxY);
     }
-
 
 
 }
