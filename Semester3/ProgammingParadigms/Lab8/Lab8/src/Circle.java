@@ -5,16 +5,13 @@ import java.awt.Stroke;
 
 public class Circle extends Shape {
 
-    public Point position;
-    public int radius;
-    public boolean isFilled;
-    public Point centrePoint;
-    Point[] boundingBox = new Point[4];
+    private int radius;
+    private Point centrePoint;
 
     public Circle(int radius, Point centrePoint, boolean isFilled) {
         this.radius = radius;
         this.isFilled = isFilled;
-        this.centrePoint = new Point(centrePoint.coordX, centrePoint.coordY);
+        this.centrePoint = new Point(centrePoint.getCoordX(), centrePoint.getCoordY());
 
         calculateBoundingBox();
         position = boundingBox[0];
@@ -32,18 +29,18 @@ public class Circle extends Shape {
     public void draw() {
         System.out.println("Circle: " + centrePoint.getCoordX() + " " + centrePoint.getCoordY());
         System.out.println("Radius: " + radius);
-        System.out.println("BoundingBox0: " + boundingBox[0].coordX + " " + boundingBox[0].coordY);
-        System.out.println("BoundingBox1: " + boundingBox[1].coordX + " " + boundingBox[1].coordY);
-        System.out.println("BoundingBox2: " + boundingBox[2].coordX + " " + boundingBox[2].coordY);
-        System.out.println("BoundingBox3: " + boundingBox[3].coordX + " " + boundingBox[3].coordY);
+        System.out.println("BoundingBox0: " + boundingBox[0].getCoordX() + " " + boundingBox[0].getCoordY());
+        System.out.println("BoundingBox1: " + boundingBox[1].getCoordX() + " " + boundingBox[1].getCoordY());
+        System.out.println("BoundingBox2: " + boundingBox[2].getCoordX() + " " + boundingBox[2].getCoordY());
+        System.out.println("BoundingBox3: " + boundingBox[3].getCoordX() + " " + boundingBox[3].getCoordY());
         System.out.println(position.getCoordX() + " " + position.getCoordY());
     }
 
     public void draw(Graphics g) {
         if (isFilled) {
-            g.fillOval(centrePoint.coordX - radius, centrePoint.coordY - radius, radius * 2, radius * 2);
+            g.fillOval(centrePoint.getCoordX() - radius, centrePoint.getCoordY() - radius, radius * 2, radius * 2);
         } else {
-            g.drawOval(centrePoint.coordX - radius, centrePoint.coordY - radius, radius * 2, radius * 2);
+            g.drawOval(centrePoint.getCoordX() - radius, centrePoint.getCoordY() - radius, radius * 2, radius * 2);
         }
 
         if(!partOfComplex) {
@@ -58,9 +55,13 @@ public class Circle extends Shape {
         return isFilled;
     }
 
+    public void setFilled(boolean filled) {
+        isFilled = filled;
+    }
+
     public void translate(Point p) {
-        centrePoint.setCoordX(centrePoint.coordX + p.coordX);
-        centrePoint.setCoordY(centrePoint.coordY + p.coordY);
+        centrePoint.setCoordX(centrePoint.getCoordX() + p.getCoordX());
+        centrePoint.setCoordY(centrePoint.getCoordY() + p.getCoordY());
 
 
         calculateBoundingBox();
@@ -68,10 +69,10 @@ public class Circle extends Shape {
     }
 
     private void calculateBoundingBox() {
-        int minX = centrePoint.getCoordX() - radius;
-        int minY = centrePoint.getCoordY() - radius;
-        int maxX = centrePoint.getCoordX() + radius;
-        int maxY = centrePoint.getCoordY() + radius;
+        minX = centrePoint.getCoordX() - radius;
+        minY = centrePoint.getCoordY() - radius;
+        maxX = centrePoint.getCoordX() + radius;
+        maxY = centrePoint.getCoordY() + radius;
         
         boundingBox[3] = new Point(minX, minY);
         boundingBox[1] = new Point(maxX, minY);
