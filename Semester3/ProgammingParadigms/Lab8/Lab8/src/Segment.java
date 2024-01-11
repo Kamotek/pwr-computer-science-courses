@@ -5,11 +5,8 @@ import java.awt.Stroke;
 
 public class Segment extends Primitive{
 
-    int minX;
-    int minY;
-    int maxX;
-    int maxY;
-    Point[] boundingBox = new Point[4];
+    private Point startPoint;
+    private Point endPoint;
 
 
     public Segment(Point startPoint, Point endPoint){
@@ -19,19 +16,18 @@ public class Segment extends Primitive{
         calculatePosition();
     }
 
-    public Point position;
-    public Point startPoint;
-    public Point endPoint;
+
+
     public Point getPosition() {
         return position;
     }
     public void draw() {
         System.out.println("Segment: ");
-        System.out.println(position.coordX + " " + position.coordY + " " + endPoint.coordX + " " + endPoint.coordY);
+        System.out.println(position.getCoordX() + " " + position.getCoordY() + " " + endPoint.getCoordX() + " " + endPoint.getCoordY());
     }
 
     public void draw(Graphics g) {
-        g.drawLine(position.coordX, position.coordY, endPoint.coordX, endPoint.coordY);
+        g.drawLine(position.getCoordX(), position.getCoordY(), endPoint.getCoordX(), endPoint.getCoordY());
 
         if(!partOfComplex) {
             Graphics2D g2d = (Graphics2D) g;
@@ -45,27 +41,33 @@ public class Segment extends Primitive{
     }
     
     public  void translate(Point p) {
-        position.coordX += p.coordX;
-        position.coordY += p.coordY;
-        endPoint.coordX += p.coordX;
-        endPoint.coordY += p.coordY;
+        position.setCoordX(p.getCoordX() + position.getCoordX());
+        position.setCoordY(p.getCoordY() + position.getCoordY());
+        endPoint.setCoordX(p.getCoordX() + endPoint.getCoordX());
+        endPoint.setCoordY(p.getCoordY() + endPoint.getCoordY());
     }
 
 
 
     public Point[] getBoundingBox() {
-        boundingBox[0] = new Point(position.coordX, position.coordY);
-        boundingBox[1] = new Point(endPoint.coordX, endPoint.coordY);
-        boundingBox[2] = new Point(position.coordX, position.coordY + 1);
-        boundingBox[3] = new Point(endPoint.coordX, endPoint.coordY + 1);
+        boundingBox[0] = new Point(position.getCoordX(), position.getCoordY());
+        boundingBox[1] = new Point(endPoint.getCoordX(), endPoint.getCoordY());
+        boundingBox[2] = new Point(position.getCoordX(), position.getCoordY() + 1);
+        boundingBox[3] = new Point(endPoint.getCoordX(), endPoint.getCoordY() + 1);
         return boundingBox;
     }
     
+
+    public double getLength() {
+        return Math.sqrt(Math.pow(endPoint.getCoordX() - position.getCoordX(), 2) + Math.pow(endPoint.getCoordY() - position.getCoordY(), 2));
+    }
+
+
     private void calculatePosition() {
-        minX = Math.min(startPoint.coordX, endPoint.coordX);
-        minY = Math.min(startPoint.coordY, endPoint.coordY);
-        maxX = Math.max(startPoint.coordX, endPoint.coordX);
-        maxY = Math.max(startPoint.coordY, endPoint.coordY);
+        minX = Math.min(startPoint.getCoordX(), endPoint.getCoordX());
+        minY = Math.min(startPoint.getCoordY(), endPoint.getCoordY());
+        maxX = Math.max(startPoint.getCoordX(), endPoint.getCoordX());
+        maxY = Math.max(startPoint.getCoordY(), endPoint.getCoordY());
 
         position = new Point(minX, minY);
     }

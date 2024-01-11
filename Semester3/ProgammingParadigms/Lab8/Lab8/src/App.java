@@ -8,7 +8,6 @@ public class App {
     public static void main(String[] args) {
         Scene scene = new Scene();
 
-        NVerStar star = new NVerStar(100, new Point(250, 250), 128, true);
         Circle circle1 = new Circle(50, new Point(250, 250), false);
         Circle circle2 = new Circle(40, new Point(250, 160), false);
         Circle circle3 = new Circle(30, new Point(250, 90), false);
@@ -22,9 +21,9 @@ public class App {
         Segment hatFragment = new Segment(new Point(200, 60), new Point(300, 60));
         Rect hat = new Rect(new Point(220, 30), new Point(280, 60), true);
 
-        NVerStar star1 = new NVerStar(20, new Point(170, 120), 12, true);
+        NVerStar star1 = new NVerStar(20, new Point(170, 120), 18, true);
 
-        ComplexItem complexItem = new ComplexItem("Snowman");
+        ComplexItem complexItem = new ComplexItem();
         complexItem.addChild(circle1);
         complexItem.addChild(circle2);
         complexItem.addChild(circle3);

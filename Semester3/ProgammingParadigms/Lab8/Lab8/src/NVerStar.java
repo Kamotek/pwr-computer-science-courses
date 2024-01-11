@@ -1,19 +1,17 @@
+
 import java.util.ArrayList;
 
 public class NVerStar extends Shape {
 
-    public Point position;
-    public boolean isFilled;
-    public ArrayList<Point> verticles;
-    public int radius;
-    public Point centrePoint;
-    public int n;
-    Point[] boundingBox = new Point[4];
+    private ArrayList<Point> verticles;
+    private int radius;
+    private Point centrePoint;
+    private int n;
 
     public NVerStar(int radius, Point centrePoint, int n, boolean isFilled) {
         this.radius = radius;
         this.isFilled = isFilled;
-        this.centrePoint = new Point(centrePoint.coordX, centrePoint.coordY);
+        this.centrePoint = new Point(centrePoint.getCoordX(), centrePoint.getCoordY());
         this.n = n;
 
         generateVerticles();
@@ -49,23 +47,23 @@ public class NVerStar extends Shape {
 
     private void calculateBoundingBox() {
 
-        int minX = Integer.MAX_VALUE;
-        int minY = Integer.MAX_VALUE;
-        int maxX = Integer.MIN_VALUE;
-        int maxY = Integer.MIN_VALUE;
+        minX = Integer.MAX_VALUE;
+        minY = Integer.MAX_VALUE;
+        maxX = Integer.MIN_VALUE;
+        maxY = Integer.MIN_VALUE;
 
         for(Point p : verticles) {
-            if (p.coordX < minX) {
-                minX = p.coordX;
+            if (p.getCoordX() < minX) {
+                minX = p.getCoordX();
             }
-            if (p.coordY < minY) {
-                minY = p.coordY;
+            if (p.getCoordY() < minY) {
+                minY = p.getCoordY();
             }
-            if (p.coordX > maxX) {
-                maxX = p.coordX;
+            if (p.getCoordX() > maxX) {
+                maxX = p.getCoordX();
             }
-            if (p.coordY > maxY) {
-                maxY = p.coordY;
+            if (p.getCoordY() > maxY) {
+                maxY = p.getCoordY();
             }
         }
 
@@ -81,8 +79,8 @@ public class NVerStar extends Shape {
     }
 
     public void translate(Point p) {
-        centrePoint.setCoordX(centrePoint.coordX + p.coordX);
-        centrePoint.setCoordY(centrePoint.coordY + p.coordY);
+        centrePoint.setCoordX(centrePoint.getCoordX() + p.getCoordX());
+        centrePoint.setCoordY(centrePoint.getCoordY() + p.getCoordY());
 
         generateVerticles();
         calculateBoundingBox();
@@ -94,10 +92,10 @@ public class NVerStar extends Shape {
         System.out.println("NVerStar: " + centrePoint.getCoordX() + " " + centrePoint.getCoordY());
         System.out.println("Radius: " + radius);
         System.out.println("N: " + n);
-        System.out.println("BoundingBox0: " + boundingBox[0].coordX + " " + boundingBox[0].coordY);
-        System.out.println("BoundingBox1: " + boundingBox[1].coordX + " " + boundingBox[1].coordY);
-        System.out.println("BoundingBox2: " + boundingBox[2].coordX + " " + boundingBox[2].coordY);
-        System.out.println("BoundingBox3: " + boundingBox[3].coordX + " " + boundingBox[3].coordY);
+        System.out.println("BoundingBox0: " + boundingBox[0].getCoordX() + " " + boundingBox[0].getCoordY());
+        System.out.println("BoundingBox1: " + boundingBox[1].getCoordX() + " " + boundingBox[1].getCoordY());
+        System.out.println("BoundingBox2: " + boundingBox[2].getCoordX() + " " + boundingBox[2].getCoordY());
+        System.out.println("BoundingBox3: " + boundingBox[3].getCoordX() + " " + boundingBox[3].getCoordY());
         System.out.println(position.getCoordX() + " " + position.getCoordY());
     }
 
@@ -106,8 +104,8 @@ public class NVerStar extends Shape {
         int[] yPoints = new int[n];
 
         for(int i = 0; i<n; i++) {
-            xPoints[i] = verticles.get(i).coordX;
-            yPoints[i] = verticles.get(i).coordY;
+            xPoints[i] = verticles.get(i).getCoordX();
+            yPoints[i] = verticles.get(i).getCoordY();
         }
 
         if (isFilled) {
@@ -128,6 +126,10 @@ public class NVerStar extends Shape {
 
     public boolean getFilled() {
         return isFilled;
+    }
+
+    public void setFilled(boolean filled) {
+        isFilled = filled;
     }
 
 

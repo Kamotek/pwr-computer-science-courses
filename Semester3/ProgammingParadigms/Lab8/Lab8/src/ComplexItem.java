@@ -6,21 +6,14 @@ import java.util.ArrayList;
 
 public class ComplexItem extends Item{
 
-    ArrayList<Item> children;
-    String name;
-    Point position;
-    Point[] boundingBox = new Point[4];
-    int maxX;
-    int maxY;
-    int minX;
-    int minY;
+    private ArrayList<Item> children;
 
 
-    public ComplexItem(String name) {
-        this.name = name;
+    public ComplexItem() {
         children = new ArrayList<Item>();
 
         calculateBoundingBox();
+        position = boundingBox[0];
     }
 
     public ArrayList<Item> getChildren() {
@@ -31,6 +24,7 @@ public class ComplexItem extends Item{
         children.add(child);
         child.partOfComplex = true;
         calculateBoundingBox();
+        position = boundingBox[0];
     }
 
     public Point getPosition() {
@@ -55,11 +49,7 @@ public class ComplexItem extends Item{
         Graphics2D g2d = (Graphics2D) g;
         Stroke dashed = new BasicStroke(1, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[]{2}, 0);
         g2d.setStroke(dashed);
-        g2d.drawRect(boundingBox[0].getCoordX(), boundingBox[0].getCoordY(), maxX - minX, maxY - minY);
-        System.out.println("BoundingBox0: " + boundingBox[0].coordX + " " + boundingBox[0].coordY);
-        System.out.println("BoundingBox1: " + boundingBox[1].coordX + " " + boundingBox[1].coordY);
-        System.out.println("BoundingBox2: " + boundingBox[2].coordX + " " + boundingBox[2].coordY);
-        System.out.println("BoundingBox3: " + boundingBox[3].coordX + " " + boundingBox[3].coordY);
+        g2d.drawRect(position.getCoordX(), position.getCoordY(), maxX - minX, maxY - minY);
     }
 
     public void translate(Point p) {
@@ -67,12 +57,10 @@ public class ComplexItem extends Item{
             child.translate(p);
         }
         calculateBoundingBox();
+        position = boundingBox[0];
     }
 
-    private void calculateBoundingBox(){
-    
-                // go through all the items and find the min and max x and y
-
+    private void calculateBoundingBox() {
         minX = Integer.MAX_VALUE;
         minY = Integer.MAX_VALUE;
         maxX = Integer.MIN_VALUE;
@@ -81,17 +69,17 @@ public class ComplexItem extends Item{
         for (Item child : children) {
             Point[] childBoundingBox = child.getBoundingBox();
             for (Point p : childBoundingBox) {
-                if (p.coordX < minX) {
-                    minX = p.coordX;
+                if (p.getCoordX() < minX) {
+                    minX = p.getCoordX();
                 }
-                if (p.coordY < minY) {
-                    minY = p.coordY;
+                if (p.getCoordY() < minY) {
+                    minY = p.getCoordY();
                 }
-                if (p.coordX > maxX) {
-                    maxX = p.coordX;
+                if (p.getCoordX() > maxX) {
+                    maxX = p.getCoordX();
                 }
-                if (p.coordY > maxY) {
-                    maxY = p.coordY;
+                if (p.getCoordY() > maxY) {
+                    maxY = p.getCoordY();
                 }
             }
         }

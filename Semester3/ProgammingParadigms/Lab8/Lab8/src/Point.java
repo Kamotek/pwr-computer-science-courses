@@ -1,7 +1,7 @@
 public class Point {
 
-    int coordX;
-    int coordY;
+    private int coordX;
+    private int coordY;
 
     public Point(int coordX, int coordY) {
         this.coordX = coordX;
