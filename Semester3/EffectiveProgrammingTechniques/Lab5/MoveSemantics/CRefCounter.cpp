@@ -2,12 +2,11 @@
 
  // konstruktor domyslny
 CRefCounter::CRefCounter() {
-	i_count;
+	i_count = 0;
 }
 
-// destruktor
 CRefCounter::~CRefCounter() {
-	delete i_count;
+	i_count--;
 }
 
 // konstruktor kopiujacy

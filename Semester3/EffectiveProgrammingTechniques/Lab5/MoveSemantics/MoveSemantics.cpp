@@ -6,6 +6,8 @@
 #include <sstream>
 #include <vector>
 #include <string>
+#include "CMySmartPointer.h"
+#include "CMySmartPointer.cpp"
 
 int main() {
 
@@ -126,4 +128,16 @@ int main() {
     empty_tree = (c_tree_s2 + c_tree_s3);
 
     empty_tree.print();
+
+    
+    CMySmartPointer<int> c_sp(new int(10));
+
+    std::cout << "Value that smart pointer points to: " << *c_sp << std::endl;
+
+
+    *c_sp = 42;
+
+    std::cout << "Value that smart pointer points to: " << *c_sp << std::endl;
+
+    
 }

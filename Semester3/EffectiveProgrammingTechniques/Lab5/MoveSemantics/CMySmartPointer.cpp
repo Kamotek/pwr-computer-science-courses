@@ -23,6 +23,16 @@ CMySmartPointer<T>::~CMySmartPointer() {
 }
 
 template <typename T>
+CMySmartPointer<T>::CMySmartPointer(CMySmartPointer&& pcOther) noexcept {
+	pc_pointer = pcOther.pc_pointer;
+	pc_counter = pcOther.pc_counter;
+
+	// Reset the source pointer and counter
+	pcOther.pc_pointer = nullptr;
+	pcOther.pc_counter = nullptr;
+}
+
+template <typename T>
 T& CMySmartPointer<T>::operator*() {
 	return(*pc_pointer); // zwroc wartosc wskaznika
 }
@@ -46,4 +56,30 @@ CMySmartPointer<T>& CMySmartPointer<T>::operator=(const CMySmartPointer<T>& pcOt
 		pc_counter->iAdd();
 	}
 	return *this; // zwroc wskaznik
+}
+
+template <typename T>
+CMySmartPointer<T>& CMySmartPointer<T>::operator=(CMySmartPointer<T>&& pcOther) noexcept {
+	if (this != &pcOther) {
+		if (pc_counter->iDec() == 0) {
+			delete pc_pointer;
+			delete pc_counter;
+		}
+
+		pc_pointer = pcOther.pc_pointer;
+		pc_counter = pcOther.pc_counter;
+
+		// Reset the source pointer and counter
+		pcOther.pc_pointer = nullptr;
+		pcOther.pc_counter = nullptr;
+	}
+	return *this;
+}
+
+
+
+// Add a const version for const correctness
+template <typename T>
+const T& CMySmartPointer<T>::operator*() const {
+	return *pc_pointer;
 }
