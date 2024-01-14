@@ -404,7 +404,9 @@ CTree<T>& CTree<T>::operator+=(const CTree<T>& c_another_tree) {
 }
 template <typename T>
 
-CTree<T>& CTree<T>::operator=(CTree<T>&& pcOther) {
+
+// operator przenoszacy
+CTree<T>& CTree<T>::operator=(CTree<T>&& pcOther) noexcept {
     if (this != &pcOther) { // Check for self-assignment
         // czyscimy aktualny stan naszego obiektu
         for (auto node : vn_tree_nodes) {
@@ -424,7 +426,7 @@ CTree<T>& CTree<T>::operator=(CTree<T>&& pcOther) {
         pcOther.vs_tokens.clear();
         pcOther.root = nullptr;
     }
-    return std::move(*this);
+    return *this;
 }
 
 // konstruktor przenoszacy

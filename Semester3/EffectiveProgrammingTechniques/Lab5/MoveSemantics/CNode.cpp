@@ -253,6 +253,8 @@ bool CNode<T>::b_add_child(CNode& c_new_child) {
 	else {
 		return false; // zwracamy falsz jezeli nasz node nie jest operatorem (a wiec nie przyjmuje dzieci bo jest lisciem)
 	}
+
+	return false;
 }
 // funkcja ta sluzy do wypisania wartosci node i jego dzieci
 

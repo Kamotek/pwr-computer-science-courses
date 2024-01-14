@@ -48,7 +48,7 @@ public:
 	CTree<T>& operator=(const CTree<T>& other); // operator kopiujacy
 	CTree<T>& operator+=(const CTree<T>& c_another_tree); // operator dodawania dwoch drzew
 
-	CTree<T>& operator=(CTree<T>&& pcOther); // operator przenoszacy
+	CTree<T>& operator=(CTree<T>&& pcOther) noexcept; // operator przenoszacy
 	CTree(CTree<T>&& other) noexcept; // konstruktor przenoszacy
 };
 
