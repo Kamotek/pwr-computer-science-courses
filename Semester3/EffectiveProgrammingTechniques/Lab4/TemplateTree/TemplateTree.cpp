@@ -72,7 +72,7 @@ int main() {
 
     std::cout << "-----------------------" << "\n";
 
-
+    
     // test 8 dzialania dla string, odejmowanie
 
     CTree<std::string>c_tree_s1, c_tree_s2, c_tree_s3, c_tree_s4;
