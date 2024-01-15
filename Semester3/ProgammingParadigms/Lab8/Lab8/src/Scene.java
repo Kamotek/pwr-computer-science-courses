@@ -29,8 +29,6 @@ public class Scene extends JPanel {
 
         frame.add(this); 
 
-
-
         frame.setSize(500, 500);
         frame.setVisible(true);
         repaint();
@@ -38,6 +36,6 @@ public class Scene extends JPanel {
 
     public static void main(String[] args) {
         Scene scene = new Scene();
-        scene.draw(); // Start the drawing process
+        scene.draw(); 
     }
 }
