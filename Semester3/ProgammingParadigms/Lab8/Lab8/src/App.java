@@ -37,7 +37,9 @@ public class App {
         complexItem.addChild(hatFragment1);
         complexItem.addChild(star1);
 
+
         complexItem.translate(new Point(0, 100));
+        scene.addChildren(new TextItem("null", 10, 10));
         scene.addChildren(complexItem);
         scene.addChildren(star1);
         scene.draw();
