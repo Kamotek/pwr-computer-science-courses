@@ -1,0 +1,11 @@
+Po sprawdzeniu różnych wersji modelu, z użyciem większego, bądź mniejszego stopnia wielomianów
+Łatwo dojść do wniosku, że istnieje gdzieś pewien złoty środek.
+Dla przykładu - w przypadku moich eksperymentów najlepszym modelem okazał się ten składający się z wielomianu 8 stopnia. 
+(wiernie odwozorywywał tendencje danych, a także miał relatywnie niską sumę błędów)
+
+Jednak bardzo dużo zależy od kontekstu - użycie modeli o małej złożoności - np liniowych - w wielu przypadkach jest wystarczająca do tego,
+aby skutecznie odwzorować tendencje w zbiorach danych, jednocześnie oszczędzając moc obliczeniową (co w przypadku ogromnych ilości danych może mieć znaczenie)
+
+Jeżeli zagęszczamy ilość ekstremów na naszej funkcji - może dojść do sytuacji, gdy linia dość wiernie odwzorowywuje tendencje, jednak jest wrażliwa na 
+ekstremalne wartości, które zaburzają cały wykres, bądź próba połączenia zbyt dużej ilości  punktów może prowadzić do 'nierealnych' wyników.
+Proces taki nazywa się przeuczeniem.
